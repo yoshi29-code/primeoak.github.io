@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prime Oak Firewood — Premium Hardwood, Delivered.</title>
+  <meta name="description" content="Premium oak firewood bundles for grilling, fire pits, and everything in between. Seasoned, split, and ready to burn." />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Framer Motion via CDN (UMD) -->
+  <script src="https://cdn.jsdelivr.net/npm/framer-motion@11/dist/framer-motion.js"></script>
+
+  <style>
+    /* ─── TOKENS ───────────────────────────────────────────── */
+    :root {
+      --charcoal:   #0D0C0A;
+      --dark-wood:  #1E1A16;
+      --mid-wood:   #2A2520;
+      --ash-white:  #F2EDE6;
+      --ash-dim:    #BFB9B0;
+      --ember:      #C4602A;
+      --ember-glow: #E07040;
+      --gold:       #8B6914;
+      --gold-light: #B8921C;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { font-size: 16px; }
+
+    body {
+      background: var(--charcoal);
+      color: var(--ash-white);
+      font-family: 'Inter', system-ui, sans-serif;
+      font-weight: 400;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Smooth reveal base */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.72s ease, transform 0.72s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+    .reveal-delay-1 { transition-delay: 0.12s; }
+    .reveal-delay-2 { transition-delay: 0.24s; }
+    .reveal-delay-3 { transition-delay: 0.36s; }
+    .reveal-delay-4 { transition-delay: 0.48s; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
+    }
+
+    /* ─── NAV ──────────────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 1.25rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      background: linear-gradient(to bottom, rgba(13,12,10,.85) 0%, transparent 100%);
+      backdrop-filter: blur(0px);
+      transition: background 0.3s, backdrop-filter 0.3s;
+    }
+    nav.scrolled {
+      background: rgba(13,12,10,.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(196,96,42,.18);
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-weight: 800;
+      font-size: 1.15rem;
+      letter-spacing: 0.04em;
+      color: var(--ash-white);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--ember); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.8rem; font-weight: 500; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--ash-dim); text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--ash-white); }
+    .nav-cta {
+      font-size: 0.78rem; font-weight: 600; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--charcoal);
+      background: var(--ember); border: none; border-radius: 2px;
+      padding: 0.55rem 1.25rem; cursor: pointer; text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+      white-space: nowrap;
+    }
+    .nav-cta:hover { background: var(--ember-glow); transform: translateY(-1px); }
+    @media (max-width: 680px) {
+      .nav-links { display: none; }
+    }
+
+    /* ─── HERO ─────────────────────────────────────────────── */
+    #hero {
+      position: relative;
+      min-height: 100svh;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 0 2rem 5rem;
+      overflow: hidden;
+    }
+    /* SWAP: replace the gradient with your own image using:
+       background-image: url('/images/hero-bg.jpg'); background-size: cover; */
+    #hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background-color: var(--mid-wood);
+      background-image:
+        radial-gradient(ellipse 60% 60% at 70% 40%, rgba(139,105,20,.22) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 50% at 30% 70%, rgba(196,96,42,.18) 0%, transparent 65%),
+        linear-gradient(160deg, #0D0C0A 0%, #1E1A16 45%, #2A1E14 100%);
+      /* ↑ PLACEHOLDER: hero-bg — swap above for: background-image: url('hero-bg.jpg'); background-size: cover; background-position: center; */
+    }
+    #hero-bg::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(13,12,10,.88) 0%, rgba(13,12,10,.3) 50%, rgba(13,12,10,.12) 100%);
+    }
+    .hero-content { position: relative; z-index: 1; max-width: 800px; }
+    .hero-eyebrow {
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.22em;
+      text-transform: uppercase; color: var(--ember);
+      margin-bottom: 1.4rem;
+      display: flex; align-items: center; gap: 0.75rem;
+    }
+    .hero-eyebrow::before {
+      content: ''; display: block; width: 2rem; height: 1px; background: var(--ember);
+    }
+    .hero-headline {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: clamp(3.2rem, 8vw, 7.5rem);
+      line-height: 1.0;
+      letter-spacing: -0.02em;
+      color: var(--ash-white);
+      margin-bottom: 1.6rem;
+    }
+    .hero-headline em {
+      font-style: normal;
+      color: var(--ember);
+      /* ember flicker animation */
+      animation: ember-flicker 4.5s ease-in-out infinite;
+    }
+    @keyframes ember-flicker {
+      0%, 100% { color: var(--ember); text-shadow: 0 0 32px rgba(196,96,42,.4); }
+      48%       { color: var(--ember-glow); text-shadow: 0 0 48px rgba(224,112,64,.55); }
+      52%       { color: var(--ember); text-shadow: 0 0 20px rgba(196,96,42,.3); }
+    }
+    .hero-sub {
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      font-weight: 300;
+      color: var(--ash-dim);
+      max-width: 520px;
+      margin-bottom: 2.5rem;
+      line-height: 1.65;
+    }
+    .hero-actions { display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap; }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-size: 0.82rem; font-weight: 600; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--charcoal);
+      background: var(--ember); border: none; border-radius: 2px;
+      padding: 0.9rem 2rem; cursor: pointer; text-decoration: none;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    }
+    .btn-primary:hover {
+      background: var(--ember-glow);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(196,96,42,.35);
+    }
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-size: 0.82rem; font-weight: 500; letter-spacing: 0.08em;
+      color: var(--ash-dim); text-decoration: none;
+      transition: color 0.2s;
+    }
+    .btn-secondary:hover { color: var(--ash-white); }
+    .btn-secondary svg { transition: transform 0.2s; }
+    .btn-secondary:hover svg { transform: translateX(3px); }
+
+    /* ─── SOCIAL PROOF BAR ─────────────────────────────────── */
+    #proof {
+      background: var(--dark-wood);
+      border-top: 1px solid rgba(242,237,230,.07);
+      border-bottom: 1px solid rgba(242,237,230,.07);
+      padding: 1.8rem 2rem;
+      overflow: hidden;
+    }
+    .proof-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 1.25rem 2rem;
+    }
+    .proof-label {
+      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--ash-dim);
+      white-space: nowrap;
+    }
+    .proof-divider { width: 1px; height: 2rem; background: rgba(242,237,230,.12); }
+    .proof-stats { display: flex; gap: 2.5rem; flex-wrap: wrap; }
+    .proof-stat { text-align: center; }
+    .proof-stat strong {
+      display: block;
+      font-family: 'Playfair Display', serif;
+      font-weight: 800; font-size: 1.6rem;
+      color: var(--ash-white);
+    }
+    .proof-stat span {
+      font-size: 0.68rem; font-weight: 500; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--ash-dim);
+    }
+    .proof-badges { display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
+    .proof-badge {
+      font-size: 0.72rem; font-weight: 500; letter-spacing: 0.04em;
+      color: var(--ash-dim); display: flex; align-items: center; gap: 0.4rem;
+    }
+    .proof-badge-icon { color: var(--ember); font-size: 0.95rem; }
+    @media (max-width: 700px) { .proof-divider { display: none; } }
+
+    /* ─── SHARED SECTION STYLES ────────────────────────────── */
+    section { padding: 6rem 2rem; }
+    .section-inner { max-width: 1100px; margin: 0 auto; }
+    .section-eyebrow {
+      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.22em;
+      text-transform: uppercase; color: var(--ember);
+      margin-bottom: 1rem;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-weight: 800; font-size: clamp(2rem, 4.5vw, 3.2rem);
+      line-height: 1.1; color: var(--ash-white);
+      margin-bottom: 1.25rem;
+    }
+    .section-body {
+      font-size: 1.05rem; font-weight: 300; color: var(--ash-dim);
+      max-width: 540px; line-height: 1.7;
+    }
+
+    /* ─── FEATURES ─────────────────────────────────────────── */
+    #features { background: var(--charcoal); }
+    .features-head {
+      display: flex; justify-content: space-between; align-items: flex-end;
+      flex-wrap: wrap; gap: 1.5rem;
+      margin-bottom: 4rem;
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1px;
+      background: rgba(242,237,230,.07);
+      border: 1px solid rgba(242,237,230,.07);
+    }
+    .feature-card {
+      background: var(--charcoal);
+      padding: 2.5rem 2rem;
+      border-top: 2px solid var(--ember);
+      transition: background 0.25s;
+    }
+    .feature-card:hover { background: var(--dark-wood); }
+    .feature-icon {
+      width: 2.75rem; height: 2.75rem;
+      margin-bottom: 1.5rem;
+      /* PLACEHOLDER icon-1 through icon-4:
+         Replace the SVG below with <img src="icon-1.svg" alt=""> etc. */
+    }
+    .feature-icon svg { width: 100%; height: 100%; }
+    .feature-title {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700; font-size: 1.2rem;
+      color: var(--ash-white); margin-bottom: 0.75rem;
+    }
+    .feature-desc {
+      font-size: 0.9rem; font-weight: 300;
+      color: var(--ash-dim); line-height: 1.65;
+    }
+
+    /* ─── HOW IT WORKS ─────────────────────────────────────── */
+    #how { background: var(--dark-wood); }
+    .how-head { margin-bottom: 4rem; }
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      position: relative;
+    }
+    .steps::before {
+      content: '';
+      position: absolute;
+      top: 1.6rem; left: 5%; right: 5%;
+      height: 1px;
+      background: linear-gradient(to right, var(--ember) 0%, rgba(196,96,42,.3) 50%, var(--ember) 100%);
+      z-index: 0;
+    }
+    .step { padding: 0 2rem 0 0; position: relative; z-index: 1; }
+    .step-dot {
+      width: 3.25rem; height: 3.25rem;
+      border-radius: 50%;
+      border: 1px solid var(--ember);
+      background: var(--dark-wood);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 1.75rem;
+    }
+    .step-num {
+      font-family: 'Playfair Display', serif;
+      font-weight: 800; font-size: 1rem;
+      color: var(--ember);
+    }
+    .step-title {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700; font-size: 1.15rem;
+      color: var(--ash-white); margin-bottom: 0.65rem;
+    }
+    .step-desc {
+      font-size: 0.88rem; font-weight: 300;
+      color: var(--ash-dim); line-height: 1.65;
+    }
+    @media (max-width: 700px) {
+      .steps { grid-template-columns: 1fr; gap: 2.5rem; }
+      .steps::before { display: none; }
+      .step { padding: 0; }
+    }
+
+    /* ─── ILLUSTRATION BREAK ───────────────────────────────── */
+    #illustration {
+      /* PLACEHOLDER illustration-1: swap background-image below */
+      height: 420px;
+      background-color: var(--mid-wood);
+      background-image: radial-gradient(ellipse 80% 80% at 50% 50%, rgba(196,96,42,.15) 0%, transparent 70%);
+      position: relative; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    #illustration .illus-label {
+      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.2em;
+      text-transform: uppercase; color: rgba(242,237,230,.2);
+      border: 1px solid rgba(242,237,230,.1); padding: 0.5rem 1.25rem; border-radius: 2px;
+    }
+    /* Decorative log stack graphic (pure CSS) */
+    .log-stack { position: absolute; bottom: 0; right: 10%; opacity: .25; }
+    .log { width: 180px; height: 26px; border-radius: 13px; background: #5a3a1a; margin-bottom: 4px; }
+    .log:nth-child(2) { width: 160px; }
+    .log:nth-child(3) { width: 140px; }
+
+    /* ─── TESTIMONIAL ──────────────────────────────────────── */
+    #testimonial { background: var(--charcoal); }
+    .testimonial-inner {
+      max-width: 780px; margin: 0 auto; text-align: center;
+    }
+    .testimonial-stars {
+      display: flex; justify-content: center; gap: 0.3rem;
+      margin-bottom: 2rem;
+    }
+    .testimonial-stars span { color: var(--gold-light); font-size: 1.1rem; }
+    .testimonial-quote {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700; font-style: italic;
+      font-size: clamp(1.4rem, 3vw, 2.1rem);
+      line-height: 1.35; color: var(--ash-white);
+      margin-bottom: 2rem;
+    }
+    .testimonial-quote em { font-style: normal; color: var(--ember); }
+    .testimonial-attr {
+      display: flex; flex-direction: column; align-items: center; gap: 0.2rem;
+    }
+    .testimonial-name {
+      font-size: 0.8rem; font-weight: 600; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--ash-white);
+    }
+    .testimonial-role {
+      font-size: 0.78rem; font-weight: 300; color: var(--ash-dim);
+    }
+
+    /* ─── PRICING ──────────────────────────────────────────── */
+    #pricing { background: var(--dark-wood); }
+    .pricing-head { margin-bottom: 3.5rem; }
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+    .pricing-card {
+      background: var(--charcoal);
+      border: 1px solid rgba(242,237,230,.08);
+      border-radius: 4px;
+      padding: 2.25rem 2rem;
+      position: relative;
+      transition: border-color 0.25s, transform 0.2s;
+    }
+    .pricing-card:hover {
+      border-color: rgba(196,96,42,.45);
+      transform: translateY(-3px);
+    }
+    .pricing-card.featured {
+      border-color: var(--ember);
+      background: var(--mid-wood);
+    }
+    .pricing-badge {
+      position: absolute; top: -0.7rem; left: 50%; transform: translateX(-50%);
+      background: var(--ember); color: var(--charcoal);
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.14em;
+      text-transform: uppercase; padding: 0.2rem 0.9rem; border-radius: 2px;
+      white-space: nowrap;
+    }
+    .pricing-tier {
+      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--ember); margin-bottom: 0.75rem;
+    }
+    .pricing-name {
+      font-family: 'Playfair Display', serif;
+      font-weight: 800; font-size: 1.45rem;
+      color: var(--ash-white); margin-bottom: 0.4rem;
+    }
+    .pricing-price {
+      font-size: 2.4rem; font-weight: 800; color: var(--ash-white);
+      line-height: 1; margin-bottom: 0.3rem;
+    }
+    .pricing-price sup { font-size: 1.1rem; font-weight: 500; vertical-align: super; }
+    .pricing-unit { font-size: 0.78rem; color: var(--ash-dim); margin-bottom: 1.5rem; }
+    .pricing-divider { height: 1px; background: rgba(242,237,230,.1); margin-bottom: 1.5rem; }
+    .pricing-features { list-style: none; margin-bottom: 2rem; }
+    .pricing-features li {
+      display: flex; align-items: flex-start; gap: 0.6rem;
+      font-size: 0.88rem; font-weight: 300; color: var(--ash-dim);
+      padding: 0.35rem 0;
+    }
+    .pricing-features li::before {
+      content: '✓'; color: var(--ember); font-size: 0.75rem;
+      font-weight: 700; flex-shrink: 0; margin-top: 2px;
+    }
+    .btn-outline {
+      display: block; text-align: center;
+      font-size: 0.78rem; font-weight: 600; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--ash-white);
+      border: 1px solid rgba(242,237,230,.25); border-radius: 2px;
+      padding: 0.85rem; cursor: pointer; text-decoration: none;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-outline:hover { border-color: var(--ember); color: var(--ember); }
+    .btn-filled {
+      display: block; text-align: center;
+      font-size: 0.78rem; font-weight: 600; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--charcoal);
+      background: var(--ember); border: 1px solid var(--ember); border-radius: 2px;
+      padding: 0.85rem; cursor: pointer; text-decoration: none;
+      transition: background 0.2s;
+    }
+    .btn-filled:hover { background: var(--ember-glow); border-color: var(--ember-glow); }
+
+    /* ─── FINAL CTA ────────────────────────────────────────── */
+    #cta {
+      background: var(--charcoal);
+      border-top: 1px solid rgba(196,96,42,.2);
+    }
+    .cta-inner {
+      max-width: 700px; margin: 0 auto; text-align: center;
+    }
+    .cta-inner .section-title { margin-bottom: 1rem; }
+    .cta-inner .section-body { margin: 0 auto 2.5rem; text-align: center; }
+    .cta-actions { display: flex; justify-content: center; gap: 1.25rem; flex-wrap: wrap; }
+
+    /* ─── FOOTER ───────────────────────────────────────────── */
+    footer {
+      position: relative; overflow: hidden;
+      padding: 5rem 2rem 3rem;
+    }
+    /* PLACEHOLDER footer-bg:
+       Replace gradient with: background-image: url('footer-bg.jpg'); background-size: cover; */
+    #footer-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background-color: var(--dark-wood);
+      background-image:
+        radial-gradient(ellipse 70% 80% at 20% 50%, rgba(196,96,42,.12) 0%, transparent 60%),
+        linear-gradient(160deg, #1E1A16 0%, #0D0C0A 100%);
+    }
+    #footer-bg::before {
+      content: ''; position: absolute; inset: 0;
+      background: rgba(13,12,10,.6);
+    }
+    .footer-inner {
+      position: relative; z-index: 1;
+      max-width: 1100px; margin: 0 auto;
+    }
+    .footer-top {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      flex-wrap: wrap; gap: 3rem;
+      margin-bottom: 3.5rem;
+    }
+    .footer-brand { max-width: 280px; }
+    .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900; font-size: 1.5rem;
+      color: var(--ash-white);
+      margin-bottom: 1rem; display: block;
+    }
+    .footer-logo span { color: var(--ember); }
+    .footer-tagline {
+      font-size: 0.85rem; font-weight: 300; color: var(--ash-dim);
+      line-height: 1.6; margin-bottom: 1.5rem;
+    }
+    .footer-social { display: flex; gap: 1rem; }
+    .footer-social a {
+      width: 2.2rem; height: 2.2rem;
+      border: 1px solid rgba(242,237,230,.15); border-radius: 2px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--ash-dim); text-decoration: none;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .footer-social a:hover { border-color: var(--ember); color: var(--ember); }
+    .footer-nav { display: flex; gap: 4rem; flex-wrap: wrap; }
+    .footer-col h4 {
+      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--ash-white);
+      margin-bottom: 1.2rem;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col li { margin-bottom: 0.6rem; }
+    .footer-col a {
+      font-size: 0.85rem; font-weight: 300; color: var(--ash-dim);
+      text-decoration: none; transition: color 0.2s;
+    }
+    .footer-col a:hover { color: var(--ash-white); }
+    .footer-bottom {
+      padding-top: 2rem;
+      border-top: 1px solid rgba(242,237,230,.08);
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 1rem;
+    }
+    .footer-copy {
+      font-size: 0.75rem; font-weight: 300; color: var(--ash-dim);
+    }
+    .footer-ember {
+      font-size: 0.75rem; font-weight: 300; color: var(--ash-dim);
+      display: flex; align-items: center; gap: 0.4rem;
+    }
+    .footer-ember span { color: var(--ember); }
+
+    /* ─── FOCUS / A11Y ─────────────────────────────────────── */
+    :focus-visible {
+      outline: 2px solid var(--ember);
+      outline-offset: 3px;
+    }
+
+    /* ─── SCROLL TO TOP ────────────────────────────────────── */
+    #scroll-top {
+      position: fixed; bottom: 2rem; right: 2rem; z-index: 200;
+      width: 2.75rem; height: 2.75rem;
+      background: var(--ember); color: var(--charcoal);
+      border: none; border-radius: 2px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s, transform 0.15s;
+    }
+    #scroll-top.visible { opacity: 1; pointer-events: all; }
+    #scroll-top:hover { transform: translateY(-2px); }
+  </style>
+</head>
+<body>
+
+<!-- ─── NAV ──────────────────────────────────── -->
+<nav id="main-nav" role="navigation" aria-label="Main navigation">
+  <a href="#hero" class="nav-logo" aria-label="Prime Oak Firewood home">Prime <span>Oak</span></a>
+  <ul class="nav-links" role="list">
+    <li><a href="#features">Why Us</a></li>
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#pricing">Bundles</a></li>
+  </ul>
+  <a href="sms:+15551234567?body=Hi%2C%20I%27d%20like%20to%20order%20firewood!" class="nav-cta" aria-label="Text us to order">Text to Order</a>
+</nav>
+
+<!-- ─── HERO ──────────────────────────────────── -->
+<section id="hero" aria-labelledby="hero-title">
+  <div id="hero-bg" role="img" aria-label="Placeholder: hero-bg — replace with your firewood photograph"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow reveal">Premium Hardwood · Local Delivery</p>
+    <h1 class="hero-headline reveal reveal-delay-1" id="hero-title">
+      Built for the<br><em>Burn.</em>
+    </h1>
+    <p class="hero-sub reveal reveal-delay-2">
+      Kiln-dried oak bundles for grillmasters, fire-pit obsessives, and everyone who knows the difference a real log makes.
+    </p>
+    <div class="hero-actions reveal reveal-delay-3">
+      <a href="sms:+15551234567?body=Hi%2C%20I%27d%20like%20to%20order%20firewood!" class="btn-primary" aria-label="Send us a text to order firewood">
+        <!-- Phone icon -->
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11.5a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .84h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+        Text Us to Order
+      </a>
+      <a href="#pricing" class="btn-secondary" aria-label="See bundle pricing">
+        View Bundles
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SOCIAL PROOF BAR ──────────────────────── -->
+<div id="proof" role="region" aria-label="Social proof">
+  <div class="proof-inner">
+    <p class="proof-label">Trusted by fire lovers</p>
+    <div class="proof-divider" aria-hidden="true"></div>
+    <div class="proof-stats" role="list">
+      <div class="proof-stat" role="listitem">
+        <strong>2,400+</strong>
+        <span>Bundles Delivered</span>
+      </div>
+      <div class="proof-stat" role="listitem">
+        <strong>4.9★</strong>
+        <span>Average Rating</span>
+      </div>
+      <div class="proof-stat" role="listitem">
+        <strong>Same-Day</strong>
+        <span>Local Delivery</span>
+      </div>
+    </div>
+    <div class="proof-divider" aria-hidden="true"></div>
+    <div class="proof-badges">
+      <span class="proof-badge"><span class="proof-badge-icon" aria-hidden="true">✦</span> Kiln-Dried Oak</span>
+      <span class="proof-badge"><span class="proof-badge-icon" aria-hidden="true">✦</span> Sustainably Sourced</span>
+      <span class="proof-badge"><span class="proof-badge-icon" aria-hidden="true">✦</span> No Bark Mess</span>
+    </div>
+  </div>
+</div>
+
+<!-- ─── FEATURES ──────────────────────────────── -->
+<section id="features" aria-labelledby="features-title">
+  <div class="section-inner">
+    <div class="features-head">
+      <div>
+        <p class="section-eyebrow reveal">Why Prime Oak</p>
+        <h2 class="section-title reveal reveal-delay-1" id="features-title">
+          Wood that works<br>as hard as you do.
+        </h2>
+      </div>
+      <p class="section-body reveal reveal-delay-2">
+        Not all firewood is equal. Ours is split tight, dried right, and delivered to your door ready to light.
+      </p>
+    </div>
+    <div class="features-grid" role="list">
+
+      <!-- CARD 1 -->
+      <article class="feature-card reveal" role="listitem">
+        <div class="feature-icon" aria-hidden="true">
+          <!-- PLACEHOLDER icon-1: replace with <img src="icon-1.svg" alt=""> -->
+          <svg viewBox="0 0 48 48" fill="none" stroke="var(--ember)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <ellipse cx="24" cy="38" rx="14" ry="4"/>
+            <path d="M24 10 C16 18 10 24 14 32 C17 37 31 37 34 32 C38 24 32 18 24 10Z"/>
+            <path d="M24 18 C21 22 19 26 21 30 C22 32 26 32 27 30 C29 26 27 22 24 18Z" fill="var(--ember)" stroke="none" opacity=".5"/>
+          </svg>
+        </div>
+        <h3 class="feature-title">High-Heat Burn</h3>
+        <p class="feature-desc">Kiln-dried to under 20% moisture. Lights faster, burns hotter, produces less smoke — exactly what your grill demands.</p>
+      </article>
+
+      <!-- CARD 2 -->
+      <article class="feature-card reveal reveal-delay-1" role="listitem">
+        <div class="feature-icon" aria-hidden="true">
+          <!-- PLACEHOLDER icon-2 -->
+          <svg viewBox="0 0 48 48" fill="none" stroke="var(--ember)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="8" y="22" width="32" height="8" rx="4"/>
+            <rect x="10" y="14" width="28" height="8" rx="4"/>
+            <rect x="12" y="30" width="24" height="8" rx="4"/>
+          </svg>
+        </div>
+        <h3 class="feature-title">Uniform Splits</h3>
+        <p class="feature-desc">Every piece is cut and split to a consistent size so your fire builds evenly — no fumbling with odd shapes at 10 PM.</p>
+      </article>
+
+      <!-- CARD 3 -->
+      <article class="feature-card reveal reveal-delay-2" role="listitem">
+        <div class="feature-icon" aria-hidden="true">
+          <!-- PLACEHOLDER icon-3 -->
+          <svg viewBox="0 0 48 48" fill="none" stroke="var(--ember)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="24" cy="24" r="14"/>
+            <path d="M24 14 L24 24 L32 28"/>
+          </svg>
+        </div>
+        <h3 class="feature-title">Same-Day Delivery</h3>
+        <p class="feature-desc">Text us before noon and we deliver the same day. No subscription traps, no minimums — just firewood when you want it.</p>
+      </article>
+
+      <!-- CARD 4 -->
+      <article class="feature-card reveal reveal-delay-3" role="listitem">
+        <div class="feature-icon" aria-hidden="true">
+          <!-- PLACEHOLDER icon-4 -->
+          <svg viewBox="0 0 48 48" fill="none" stroke="var(--ember)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M24 6 L29.5 18 L43 19.5 L33 29 L35.5 42 L24 36 L12.5 42 L15 29 L5 19.5 L18.5 18 Z"/>
+          </svg>
+        </div>
+        <h3 class="feature-title">Sustainably Sourced</h3>
+        <p class="feature-desc">All wood comes from responsibly managed local forests. You get a better burn; the land stays standing.</p>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ─── HOW IT WORKS ───────────────────────────── -->
+<section id="how" aria-labelledby="how-title">
+  <div class="section-inner">
+    <div class="how-head">
+      <p class="section-eyebrow reveal">The Process</p>
+      <h2 class="section-title reveal reveal-delay-1" id="how-title">From text to flame<br>in three moves.</h2>
+    </div>
+    <div class="steps" role="list">
+
+      <div class="step reveal" role="listitem">
+        <div class="step-dot" aria-hidden="true"><span class="step-num">I</span></div>
+        <h3 class="step-title">Text Your Order</h3>
+        <p class="step-desc">Send us a quick text with how many bundles you need and your address. No app, no account, no friction.</p>
+      </div>
+
+      <div class="step reveal reveal-delay-1" role="listitem">
+        <div class="step-dot" aria-hidden="true"><span class="step-num">II</span></div>
+        <h3 class="step-title">We Load & Drive</h3>
+        <p class="step-desc">Your order is pulled from our dry storage and loaded the same morning. We confirm your delivery window by text.</p>
+      </div>
+
+      <div class="step reveal reveal-delay-2" role="listitem">
+        <div class="step-dot" aria-hidden="true"><span class="step-num">III</span></div>
+        <h3 class="step-title">Light It Up</h3>
+        <p class="step-desc">Stacked and ready on your porch. Strike a match and spend the evening doing what matters — not hauling wood.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ─── ILLUSTRATION BREAK ────────────────────── -->
+<div id="illustration" role="img" aria-label="Placeholder: illustration-1 — replace with your firewood lifestyle photo">
+  <!-- PLACEHOLDER: illustration-1 — swap this entire div for an <img> or set a CSS background-image -->
+  <span class="illus-label">illustration-1 · lifestyle photo</span>
+  <div class="log-stack" aria-hidden="true">
+    <div class="log"></div>
+    <div class="log"></div>
+    <div class="log"></div>
+  </div>
+</div>
+
+<!-- ─── TESTIMONIAL ───────────────────────────── -->
+<section id="testimonial" aria-labelledby="testimonial-title">
+  <div class="section-inner">
+    <div class="testimonial-inner">
+      <div class="testimonial-stars reveal" aria-label="5 stars">
+        <span aria-hidden="true">★</span><span aria-hidden="true">★</span>
+        <span aria-hidden="true">★</span><span aria-hidden="true">★</span>
+        <span aria-hidden="true">★</span>
+      </div>
+      <blockquote class="testimonial-quote reveal reveal-delay-1" id="testimonial-title">
+        "I've tried every firewood service around. Prime Oak is the only one where <em>every single log</em> lights on the first try. Game changer for my weekend grills."
+      </blockquote>
+      <div class="testimonial-attr reveal reveal-delay-2">
+        <span class="testimonial-name">Marcus T.</span>
+        <span class="testimonial-role">BBQ Competitor · Charlotte, NC</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── PRICING ───────────────────────────────── -->
+<section id="pricing" aria-labelledby="pricing-title">
+  <div class="section-inner">
+    <div class="pricing-head">
+      <p class="section-eyebrow reveal">Bundles &amp; Pricing</p>
+      <h2 class="section-title reveal reveal-delay-1" id="pricing-title">Pick your bundle.<br>We handle the rest.</h2>
+      <p class="section-body reveal reveal-delay-2">No contracts. No subscriptions. Order once or every weekend — always the same quality.</p>
+    </div>
+    <div class="pricing-grid">
+
+      <div class="pricing-card reveal">
+        <p class="pricing-tier">Starter</p>
+        <p class="pricing-name">Small Bundle</p>
+        <p class="pricing-price"><sup>$</sup>18</p>
+        <p class="pricing-unit">~20 lbs · fits a small fire pit</p>
+        <div class="pricing-divider"></div>
+        <ul class="pricing-features">
+          <li>~1.5 hrs of burn time</li>
+          <li>Kiln-dried oak splits</li>
+          <li>Delivered same day</li>
+        </ul>
+        <a href="sms:+15551234567?body=1%20Small%20Bundle%20please!" class="btn-outline">Text to Order</a>
+      </div>
+
+      <div class="pricing-card featured reveal reveal-delay-1">
+        <span class="pricing-badge">Most Popular</span>
+        <p class="pricing-tier">Best Value</p>
+        <p class="pricing-name">Full Bundle</p>
+        <p class="pricing-price"><sup>$</sup>34</p>
+        <p class="pricing-unit">~40 lbs · grill nights &amp; bonfires</p>
+        <div class="pricing-divider"></div>
+        <ul class="pricing-features">
+          <li>~3 hrs of burn time</li>
+          <li>Premium oak hardwood</li>
+          <li>Same-day delivery</li>
+          <li>Free fire-starter sticks</li>
+        </ul>
+        <a href="sms:+15551234567?body=1%20Full%20Bundle%20please!" class="btn-filled">Text to Order</a>
+      </div>
+
+      <div class="pricing-card reveal reveal-delay-2">
+        <p class="pricing-tier">Bulk</p>
+        <p class="pricing-name">Half Cord</p>
+        <p class="pricing-price"><sup>$</sup>189</p>
+        <p class="pricing-unit">~180 lbs · seasons &amp; stockpiles</p>
+        <div class="pricing-divider"></div>
+        <ul class="pricing-features">
+          <li>Palletized for easy storage</li>
+          <li>Scheduled delivery window</li>
+          <li>Covered stacking included</li>
+          <li>Priority text support</li>
+        </ul>
+        <a href="sms:+15551234567?body=Half%20Cord%20inquiry" class="btn-outline">Text to Order</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ─── FINAL CTA ──────────────────────────────── -->
+<section id="cta" aria-labelledby="cta-title">
+  <div class="section-inner">
+    <div class="cta-inner">
+      <p class="section-eyebrow reveal">Ready?</p>
+      <h2 class="section-title reveal reveal-delay-1" id="cta-title">Your next fire starts<br>with one text.</h2>
+      <p class="section-body reveal reveal-delay-2">
+        Order in seconds. Delivered today. The only wood worth burning.
+      </p>
+      <div class="cta-actions reveal reveal-delay-3">
+        <a href="sms:+15551234567?body=Hi%2C%20I%27d%20like%20to%20order%20firewood!" class="btn-primary">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11.5a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .84h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+          Send a Text Now
+        </a>
+        <a href="#pricing" class="btn-secondary">
+          See all bundles
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ────────────────────────────────── -->
+<footer role="contentinfo">
+  <div id="footer-bg" role="img" aria-label="Placeholder: footer-bg — replace with your footer background image"></div>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <span class="footer-logo">Prime <span>Oak</span></span>
+        <p class="footer-tagline">Premium kiln-dried oak firewood, delivered same-day to your door. Built for people who take their fire seriously.</p>
+        <nav class="footer-social" aria-label="Social media links">
+          <!-- Instagram -->
+          <a href="#" aria-label="Instagram">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
+          <!-- Facebook -->
+          <a href="#" aria-label="Facebook">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+          </a>
+          <!-- TikTok -->
+          <a href="#" aria-label="TikTok">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34l-.01-8.24a8.27 8.27 0 004.84 1.56V9.18a4.85 4.85 0 01-1.07-.49z"/></svg>
+          </a>
+        </nav>
+      </div>
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <div class="footer-col">
+          <h4>Order</h4>
+          <ul role="list">
+            <li><a href="#pricing">Small Bundle</a></li>
+            <li><a href="#pricing">Full Bundle</a></li>
+            <li><a href="#pricing">Half Cord</a></li>
+            <li><a href="sms:+15551234567">Text to Order</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul role="list">
+            <li><a href="#">Our Wood</a></li>
+            <li><a href="#">Sourcing</a></li>
+            <li><a href="#">Delivery Area</a></li>
+            <li><a href="#">FAQ</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <ul role="list">
+            <li><a href="sms:+15551234567">Text: (555) 123-4567</a></li>
+            <li><a href="mailto:hello@primeoakfirewood.com">hello@primeoakfirewood.com</a></li>
+            <li><a href="#">Service Area</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2025 Prime Oak Firewood. All rights reserved.</p>
+      <p class="footer-ember">Made for those who burn <span aria-hidden="true">✦</span></p>
+    </div>
+  </div>
+</footer>
+
+<!-- ─── SCROLL-TO-TOP ──────────────────────────── -->
+<button id="scroll-top" aria-label="Scroll to top" title="Back to top">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
+
+<script>
+  /* ── Scroll-triggered nav + reveal ── */
+  const nav = document.getElementById('main-nav');
+  const scrollTopBtn = document.getElementById('scroll-top');
+
+  const observerOpts = { threshold: 0.15 };
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, observerOpts);
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    nav.classList.toggle('scrolled', y > 60);
+    scrollTopBtn.classList.toggle('visible', y > 400);
+  }, { passive: true });
+
+  scrollTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+  /* ── Ember flicker on hero eyebrow (extra subtle touch) ── */
+  const heroEyebrow = document.querySelector('.hero-eyebrow');
+  if (heroEyebrow) {
+    setTimeout(() => heroEyebrow.classList.add('visible'), 100);
+  }
+
+  /* ── Active nav link on scroll ── */
+  const sections = document.querySelectorAll('section[id], div[id="proof"]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  const sectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(l => l.removeAttribute('aria-current'));
+        const link = document.querySelector(`.nav-links a[href="#${e.target.id}"]`);
+        if (link) link.setAttribute('aria-current', 'page');
+      }
+    });
+  }, { threshold: 0.5 });
+  sections.forEach(s => sectionObserver.observe(s));
+</script>
+</body>
+</html>
