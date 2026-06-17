@@ -24,6 +24,8 @@
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    ul, ol { list-style: none; margin: 0; padding: 0; }
+    li { display: block; }
     html { font-size: 16px; scroll-behavior: smooth; }
 
     body {
@@ -540,12 +542,12 @@
     }
     .footer-col ul { list-style: none; }
     .footer-col li { margin-bottom: 0.55rem; }
-    .footer-col a {
+    .footer-col a, .footer-col-link {
       font-size: 0.85rem; font-weight: 300;
       color: rgba(245,240,232,.45); text-decoration: none;
-      transition: color 0.2s;
+      transition: color 0.2s; display: inline;
     }
-    .footer-col a:hover { color: var(--cream); }
+    .footer-col a:hover, .footer-col-link:hover { color: var(--cream); }
     .footer-bottom {
       padding-top: 2rem;
       display: flex; justify-content: space-between;
@@ -862,34 +864,34 @@
           <a href="mailto:matiasborrayes@gmail.com">matiasborrayes@gmail.com</a>
         </div>
       </div>
-      <nav class="footer-nav" aria-label="Footer navigation">
+      <div class="footer-nav" style="display:flex;gap:4rem;flex-wrap:wrap;">
         <div class="footer-col">
           <h4>Order</h4>
-          <ul>
-            <li><a href="sms:+19195764843?body=Hi%20Matias%2C%20I%27d%20like%201%20Small%20Bundle!">Small Bundle — $18</a></li>
-            <li><a href="sms:+19195764843?body=Hi%20Matias%2C%20I%27d%20like%201%20Full%20Bundle!">Full Bundle — $34</a></li>
-            <li><a href="sms:+19195764843?body=Hi%20Matias%2C%20I%27m%20interested%20in%20a%20Half%20Cord!">Half Cord — $189</a></li>
+          <ul style="list-style:none;margin:0;padding:0;display:block;">
+            <li style="display:block;margin-bottom:0.55rem;"><a href="sms:+19195764843?body=Hi%20Matias%2C%20I%27d%20like%201%20Small%20Bundle!" class="footer-col-link">Small Bundle — $18</a></li>
+            <li style="display:block;margin-bottom:0.55rem;"><a href="sms:+19195764843?body=Hi%20Matias%2C%20I%27d%20like%201%20Full%20Bundle!" class="footer-col-link">Full Bundle — $34</a></li>
+            <li style="display:block;margin-bottom:0.55rem;"><a href="sms:+19195764843?body=Hi%20Matias%2C%20I%27m%20interested%20in%20a%20Half%20Cord!" class="footer-col-link">Half Cord — $189</a></li>
           </ul>
         </div>
         <div class="footer-col">
           <h4>Company</h4>
-          <ul>
-            <li><a href="#about">About Us</a></li>
-            <li><a href="#features">Our Wood</a></li>
-            <li><a href="#how">How It Works</a></li>
+          <ul style="list-style:none;margin:0;padding:0;display:block;">
+            <li style="display:block;margin-bottom:0.55rem;"><a href="#about" class="footer-col-link" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'});return false;">About Us</a></li>
+            <li style="display:block;margin-bottom:0.55rem;"><a href="#features" class="footer-col-link" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'});return false;">Our Wood</a></li>
+            <li style="display:block;margin-bottom:0.55rem;"><a href="#how" class="footer-col-link" onclick="document.getElementById('how').scrollIntoView({behavior:'smooth'});return false;">How It Works</a></li>
           </ul>
         </div>
         <div class="footer-col">
           <h4>Service Area</h4>
-          <ul>
-            <li><a href="#cta">Apex &amp; New Hill</a></li>
-            <li><a href="#cta">Raleigh</a></li>
-            <li><a href="#cta">Durham</a></li>
-            <li><a href="#cta">Chapel Hill</a></li>
-            <li><a href="#cta">Cary</a></li>
+          <ul style="list-style:none;margin:0;padding:0;display:block;">
+            <li style="display:block;margin-bottom:0.55rem;"><a href="#cta" class="footer-col-link" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'});return false;">Apex &amp; New Hill</a></li>
+            <li style="display:block;margin-bottom:0.55rem;"><a href="#cta" class="footer-col-link" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'});return false;">Raleigh</a></li>
+            <li style="display:block;margin-bottom:0.55rem;"><a href="#cta" class="footer-col-link" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'});return false;">Durham</a></li>
+            <li style="display:block;margin-bottom:0.55rem;"><a href="#cta" class="footer-col-link" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'});return false;">Chapel Hill</a></li>
+            <li style="display:block;margin-bottom:0.55rem;"><a href="#cta" class="footer-col-link" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'});return false;">Cary</a></li>
           </ul>
         </div>
-      </nav>
+      </div>
     </div>
     <div class="footer-bottom">
       <p class="footer-copy">© 2025 Prime Oak Firewood · New Hill, NC · All rights reserved.</p>
