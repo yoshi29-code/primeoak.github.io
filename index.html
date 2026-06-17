@@ -78,6 +78,13 @@
       transition: color 0.2s;
     }
     .nav-links a:hover { color: var(--ink); }
+    .nav-link {
+      font-size: 0.78rem; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--ink-light); text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-link:hover { color: var(--ink); }
     .nav-cta {
       font-size: 0.75rem; font-weight: 600;
       letter-spacing: 0.1em; text-transform: uppercase;
@@ -573,11 +580,11 @@
 <!-- NAV -->
 <nav id="main-nav" aria-label="Main navigation">
   <a href="#hero" class="nav-logo">Prime <span>Oak</span></a>
-  <ul class="nav-links">
-    <li><a href="#features">Why Us</a></li>
-    <li><a href="#how">How It Works</a></li>
-    <li><a href="#pricing">Bundles</a></li>
-    <li><a href="#about">About</a></li>
+  <ul class="nav-links" style="display:flex;flex-direction:row;list-style:none;gap:2.25rem;margin:0;padding:0;align-items:center;">
+    <li style="display:inline;list-style:none;margin:0;padding:0;"><a href="#features" class="nav-link" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'});return false;">Why Us</a></li>
+    <li style="display:inline;list-style:none;margin:0;padding:0;"><a href="#how" class="nav-link" onclick="document.getElementById('how').scrollIntoView({behavior:'smooth'});return false;">How It Works</a></li>
+    <li style="display:inline;list-style:none;margin:0;padding:0;"><a href="#pricing" class="nav-link" onclick="document.getElementById('pricing').scrollIntoView({behavior:'smooth'});return false;">Bundles</a></li>
+    <li style="display:inline;list-style:none;margin:0;padding:0;"><a href="#about" class="nav-link" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'});return false;">About</a></li>
   </ul>
   <a href="sms:+19195764843?body=Hi%20Matias%2C%20I%27d%20like%20to%20order%20some%20firewood!" class="nav-cta">Text to Order</a>
 </nav>
